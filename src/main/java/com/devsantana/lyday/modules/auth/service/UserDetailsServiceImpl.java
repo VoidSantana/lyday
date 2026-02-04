@@ -23,19 +23,29 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         String adminUsername = System.getenv("ADMIN_USERNAME");
         String adminPassword = System.getenv("ADMIN_PASSWORD");
 
-        if (adminUsername == null || adminPassword == null) {
+        String userUsername = System.getenv("USER_USERNAME");
+        String userPassword = System.getenv("USER_PASSWORD");
+
+        if (adminUsername == null || adminPassword == null || username == null || userPassword == null) {
             throw new IllegalStateException(
-                    "Variáveis de ambiente ADMIN_USERNAME ou ADMIN_PASSWORD não definidas"
+                    "Variáveis de ambiente ADMIN_USERNAME/ADMIN_PASSWORD ou " +
+                            "USER_USERNAME/USER_PASSWORD não definidas"
             );
         }
-
-        if (!username.equals(adminUsername)) {
-            throw new UsernameNotFoundException("Nome de usuário não encontrado");
+        if (username.equals(adminUsername)){
+            return User.builder()
+                    .username(adminUsername)
+                    .password(passwordEncoder.encode(adminPassword))
+                    .roles("ADMIN")
+                    .build();
         }
-        return User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode(adminPassword))
-                .roles("ADMIN")
-                .build();
+        if (username.equals(userUsername)){
+            return User.builder()
+                    .username(userUsername)
+                    .password(passwordEncoder.encode(userPassword))
+                    .roles("USER")
+                    .build();
+        }
+        throw new UsernameNotFoundException("Nome de Usuario Não Encontrado");
     }
 }
