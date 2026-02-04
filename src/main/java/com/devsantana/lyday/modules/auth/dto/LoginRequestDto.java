@@ -1,0 +1,9 @@
+package com.devsantana.lyday.modules.auth.dto;
+
+import lombok.Data;
+
+@Data
+public class LoginRequestDto {
+    private String username;
+    private  String password;
+}
