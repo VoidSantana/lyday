@@ -2,8 +2,10 @@ package com.devsantana.lyday.shared.exeption;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -61,6 +63,33 @@ public class GlobalExceptionHandler {
         return buildError(
                 HttpStatus.BAD_REQUEST,
                 ex.getMessage(),
+                request.getRequestURI()
+        );
+    }
+    //===============================
+    // ERRO 401 - LOGIN/SENHA INVALIDO
+    //===============================
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiError> handleBadCredentials(
+            BadCredentialsException ex,
+            HttpServletRequest request
+    ){
+        return buildError(HttpStatus.UNAUTHORIZED,
+                "Usuario inexistente ou senha invalida",
+                request.getRequestURI()
+        );
+    }
+    //===============================
+    // ERRO 401 - ERRO DE AUTENTICAÇÃO (GERAL)
+    //===============================
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiError> handleAuthenticationError(
+            AuthenticationException ex,
+            HttpServletRequest request
+    ){
+        return buildError(
+                HttpStatus.UNAUTHORIZED,
+                "Falha na autenticação",
                 request.getRequestURI()
         );
     }
