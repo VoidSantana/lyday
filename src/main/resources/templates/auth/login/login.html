@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Lyday</title>
+    <script defer src="/js/app.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 24px; max-width: 420px; margin: 0 auto; }
+        input, button { width: 100%; padding: 10px; margin-top: 8px; }
+        .error { color: #ff6b6b; margin-top: 12px; }
+    </style>
+</head>
+<body>
+    <h2>Login</h2>
+
+    <label>Usuario</label>
+    <input id="username" placeholder="admin ou user..." />
+
+    <label>Usuario</label>
+    <input id="password" type="password" placeholder="sua senha" />
+
+    <button id="btnLogin">Entrar</button>
+
+    <div id="error" class="error"></div>
+
+    <script>
+        document.getElementById("btnLogin").addEventListener("click", async () => {
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value;
+
+            const errorDiv = document.getElementById("error");
+            errorDiv.textContent = "";
+
+            try {
+                await login(username, password);
+                // Apos login, manda para produtos
+                window.location.href = "/products";
+            } catch (e) {
+                errorDiv.textContent = e.message;
+            }
+        })
+    </script>
+</body>
+</html>

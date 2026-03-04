@@ -1,33 +1,174 @@
 <!DOCTYPE html>
-<html xmlns:th ="http://www.thymeleaf.org" lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Produtos</title>
+    <meta charset="UTF-8" />
+    <title>Produtos - Lyday</title>
+    <script defer src="/js/app.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 24px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 16px; }
+        th, td { border: 1px solid #333; padding: 8px; }
+        input { padding: 8px; margin: 4px 0; width: 100%; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .row { display: flex; gap: 8px; margin-top: 12px; }
+        button { padding: 10px 12px; }
+        .error { color: #ff6b6b; margin-top: 12px; }
+    </style>
 </head>
 <body>
+<h2>Produtos</h2>
 
-<h1>Lista de Produtos</h1>
+<div class="row">
+    <button onclick="window.location.href='/users'">Ir para Usuários (ADMIN)</button>
+    <button onclick="logout()">Sair</button>
+</div>
 
-<table border="1">
+<h3>Cadastrar Produto</h3>
+<div class="grid">
+    <div>
+        <label>Nome</label>
+        <input id="name" placeholder="Pastilha de Freio..." />
+    </div>
+
+    <div>
+        <label>SKU</label>
+        <input id="sku" placeholder="FO-007" />
+    </div>
+
+    <div>
+        <label>Estoque</label>
+        <input id="stock" type="number" placeholder="10" />
+    </div>
+
+    <div>
+        <label>Peso (Kg)</label>
+        <input id="weightKg" type="number" step="0.01" placeholder="1.20" />
+    </div>
+
+    <div>
+        <label>Volume (cm³)</label>
+        <input id="volumeCm3" type="number" placeholder="800" />
+    </div>
+
+    <div>
+        <label>Preço</label>
+        <input id="price" type="number" step="0.01" placeholder="189.90" />
+    </div>
+
+    <div>
+        <label>Marca</label>
+        <input id="brand" placeholder="Bosch" />
+    </div>
+
+    <div>
+        <label>Descrição</label>
+        <input id="description" placeholder="..." />
+    </div>
+</div>
+
+<button id="btnCreate">Criar Produto</button>
+<div id="msg" class="error"></div>
+
+<h3>Lista</h3>
+<button id="btnReload">Recarregar</button>
+
+<table>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Sku</th>
-        <th>Estoque</th>
-        <th>Preço</th>
+        <th>ID</th><th>Nome</th><th>SKU</th><th>Estoque</th><th>Preço</th><th>Ações</th>
     </tr>
     </thead>
-    <tbody>
-    <tr th:each="product : ${products}">
-        <td th:text="${product.id}"></td>
-        <td th:text="${product.name}"></td>
-        <td th:text="${product.sku}"></td>
-        <td th:text="${product.stock}"></td>
-        <td th:text="${product.price}"></td>
-    </tr>
-    </tbody>
+    <tbody id="tbody"></tbody>
 </table>
 
+<script>
+    function logout() {
+        clearToken();
+        window.location.href = "/login";
+    }
+
+    async function loadProducts() {
+        const res = await apiFetch("/api/products?page=0&size=50", { method: "GET" });
+        if (!res.ok) {
+            const txt = await res.text();
+            document.getElementById("msg").textContent = "Erro ao buscar produtos: " + txt;
+            return;
+        }
+        const data = await res.json();
+        const products = data.content || []; // seu retorno é Page
+
+        const tbody = document.getElementById("tbody");
+        tbody.innerHTML = "";
+
+        for (const p of products) {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+          <td>${p.id}</td>
+          <td>${p.name}</td>
+          <td>${p.sku}</td>
+          <td>${p.stock}</td>
+          <td>${p.price}</td>
+          <td>
+            <button onclick="deleteProduct(${p.id})">Excluir</button>
+          </td>
+        `;
+            tbody.appendChild(tr);
+        }
+    }
+
+    async function createProduct() {
+        const payload = {
+            name: document.getElementById("name").value.trim(),
+            sku: document.getElementById("sku").value.trim(),
+            stock: Number(document.getElementById("stock").value),
+            weightKg: Number(document.getElementById("weightKg").value),
+            volumeCm3: Number(document.getElementById("volumeCm3").value),
+            description: document.getElementById("description").value.trim(),
+            brand: document.getElementById("brand").value.trim(),
+            price: Number(document.getElementById("price").value)
+        };
+
+        const msg = document.getElementById("msg");
+        msg.textContent = "";
+
+        const res = await apiFetch("/api/products", {
+            method: "POST",
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+            let err = "Erro ao criar produto";
+            try {
+                const data = await res.json();
+                err = data.message || err;
+            } catch(e) {}
+            msg.textContent = err;
+            return;
+        }
+
+        await loadProducts();
+    }
+
+    async function deleteProduct(id) {
+        const res = await apiFetch(`/api/products/${id}`, { method: "DELETE" });
+        if (!res.ok) {
+            let err = "Erro ao excluir";
+            try {
+                const data = await res.json();
+                err = data.message || err;
+            } catch(e) {}
+            document.getElementById("msg").textContent = err;
+            return;
+        }
+        await loadProducts();
+    }
+
+    // Quando a página abrir:
+    requireAuthOrRedirect();
+    loadProducts();
+
+    document.getElementById("btnReload").addEventListener("click", loadProducts);
+    document.getElementById("btnCreate").addEventListener("click", createProduct);
+</script>
 </body>
 </html>
