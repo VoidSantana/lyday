@@ -28,7 +28,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
     // =========== FIND BY ID ===========================
-    @GetMapping("{/id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> findById(@PathVariable Long id){
         return ResponseEntity.ok(userService.findById(id));
     }
@@ -38,20 +38,20 @@ public class UserController {
         return userService.findAll(pageable);
     }
     // =========== UPDATE (roles/enabled ================
-    @PutMapping("{/id}")
+    @PutMapping("/{id}")
     public ResponseEntity<UserResponseDto> update(@PathVariable Long id,
                                                   @Valid @RequestBody UserUpdateDto dto){
         return ResponseEntity.ok(userService.update(id, dto));
     }
     // =========== UPDATE PASSWORD ======================
-    @PutMapping("{/id}/password")
+    @PutMapping("/{id}/password")
     public ResponseEntity<Void> updatePassword(@PathVariable Long id,
                                                @Valid @RequestBody UserUpdatePasswordDto dto){
         userService.updatePassword(id, dto);
         return ResponseEntity.noContent().build();
     }
     // =========== DELETE ===============================
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         userService.delete(id);
         return ResponseEntity.noContent().build();

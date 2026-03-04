@@ -28,18 +28,35 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
+
+                        //=============================================================
+                        // Paginas Frontend
+                        .requestMatchers("/ui/**").permitAll()
+                        // Arquivos estaticos
+                        .requestMatchers("/js/**", "/css/**").permitAll()
+                        //=============================================================
+
+                        //=============================================================
                         //== LOGIN LIVRE
                         .requestMatchers("/auth/**", "/error").permitAll()
+                        //=============================================================
+
+                        //=============================================================
                         //==ADMIN e USER
-                        .requestMatchers(HttpMethod.GET, "/api/products/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("/api/users**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/products/**")
+                                .hasAnyRole("ADMIN", "USER")
+                        //=============================================================
+
+
+                        //=============================================================
                         // ===APENAS ADMIN
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/products/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
                         //==DEMAIS, OBRIGATORIEDADE ESTAR LOGADO
                         .anyRequest().authenticated()
-
+                        //=============================================================
                 )
                 .addFilterBefore(
                         jwtAuthenticationFilter,

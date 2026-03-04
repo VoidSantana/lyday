@@ -1,5 +1,6 @@
 package com.devsantana.lyday.modules.products.model;
 
+import com.devsantana.lyday.shared.audit.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +17,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Product {
+public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;// Id do produto
