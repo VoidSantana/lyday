@@ -3,6 +3,8 @@ package com.devsantana.lyday.modules.products.model;
 import com.devsantana.lyday.shared.audit.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(
@@ -12,6 +14,8 @@ import lombok.*;
                 @Index(name = "idx_product_sku", columnList = "sku")
         }
         )
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
+@SQLRestriction("deleted = false")
 @Getter
 @Setter
 @NoArgsConstructor

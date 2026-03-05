@@ -3,12 +3,16 @@ package com.devsantana.lyday.modules.users.model;
 import com.devsantana.lyday.shared.audit.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
+@SQLRestriction("deleted = false")
 @Getter
 @Setter
 @AllArgsConstructor

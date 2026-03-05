@@ -34,4 +34,7 @@ public abstract class BaseEntity {
     @LastModifiedBy
     private String updateBy;
 
+    @Column(nullable = false)
+    private boolean deleted = false;
+
 }
