@@ -50,7 +50,5 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private double price;// preço do produto
 
-    //Controle de concorrência
-    @Version
-    private Long version;
+
 }
