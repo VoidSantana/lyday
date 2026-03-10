@@ -103,6 +103,9 @@ public class UserServiceImpl implements UserService{
     public void delete(Long id){
         User user = userRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("Usuario não encontrado para deleção. "));
+
+        user.setEnabled(false);
+        userRepository.save(user);
     }
 
     private Set<Role> parseRoles(Set<String> roles){
