@@ -22,9 +22,6 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @Builder
 public class Product extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;// Id do produto
 
     @Column(nullable = false, length = 150)
     private String name;// nome do produto
@@ -49,6 +46,4 @@ public class Product extends BaseEntity {
 
     @Column(nullable = false)
     private double price;// preço do produto
-
-
 }
