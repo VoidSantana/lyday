@@ -4,11 +4,12 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class CreateBranchDto {
+public class UpdateBranch {
     @NotBlank
     private String name;
     @NotBlank
     private String city;
     @NotBlank
     private String state;
+
 }

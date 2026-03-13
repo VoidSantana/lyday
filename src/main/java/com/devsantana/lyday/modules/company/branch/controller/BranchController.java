@@ -1,9 +1,9 @@
-package com.devsantana.lyday.modules.company.branch.branchcontroller;
+package com.devsantana.lyday.modules.company.branch.controller;
 
-import com.devsantana.lyday.modules.company.branch.branchdto.BranchResponseDto;
-import com.devsantana.lyday.modules.company.branch.branchdto.BranchUpdate;
-import com.devsantana.lyday.modules.company.branch.branchdto.CreateBranchDto;
-import com.devsantana.lyday.modules.company.branch.branchservice.BranchService;
+import com.devsantana.lyday.modules.company.branch.dto.BranchResponseDto;
+import com.devsantana.lyday.modules.company.branch.dto.UpdateBranch;
+import com.devsantana.lyday.modules.company.branch.dto.CreateBranchDto;
+import com.devsantana.lyday.modules.company.branch.service.BranchService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/company/branch")
+@RequestMapping("/api/company/branches")
 @RequiredArgsConstructor
 public class BranchController {
 
@@ -27,12 +27,12 @@ public class BranchController {
     public List<BranchResponseDto> findAll(Pageable pageable){
         return branchService.findAll(pageable);
     }
-    @GetMapping("/id")
+    @GetMapping("/{id}")
     public BranchResponseDto findById(@PathVariable Long id){
         return branchService.findById(id);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<BranchResponseDto> update(@PathVariable Long id, @Valid @RequestBody BranchUpdate dto){
+    public ResponseEntity<BranchResponseDto> update(@PathVariable Long id, @Valid @RequestBody UpdateBranch dto){
         return ResponseEntity.ok(branchService.update(id, dto));
     }
     @DeleteMapping("/{id}")

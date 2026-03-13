@@ -1,4 +1,4 @@
-package com.devsantana.lyday.modules.company.branch.branchdto;
+package com.devsantana.lyday.modules.company.branch.dto;
 
 import lombok.Builder;
 import lombok.Data;

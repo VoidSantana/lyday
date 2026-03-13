@@ -1,8 +1,8 @@
-package com.devsantana.lyday.modules.company.branch.branchservice;
+package com.devsantana.lyday.modules.company.branch.service;
 
-import com.devsantana.lyday.modules.company.branch.branchdto.BranchResponseDto;
-import com.devsantana.lyday.modules.company.branch.branchdto.BranchUpdate;
-import com.devsantana.lyday.modules.company.branch.branchdto.CreateBranchDto;
+import com.devsantana.lyday.modules.company.branch.dto.BranchResponseDto;
+import com.devsantana.lyday.modules.company.branch.dto.UpdateBranch;
+import com.devsantana.lyday.modules.company.branch.dto.CreateBranchDto;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public interface BranchService {
 
     List<BranchResponseDto> findAll(Pageable pageable);
 
-    BranchResponseDto update(Long id, BranchUpdate branchUpdate);
+    BranchResponseDto update(Long id, UpdateBranch updateBranch);
 
     void delete(Long id);
 }

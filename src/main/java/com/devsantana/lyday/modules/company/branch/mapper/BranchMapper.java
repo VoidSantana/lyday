@@ -1,11 +1,9 @@
 package com.devsantana.lyday.modules.company.branch.mapper;
 
-import com.devsantana.lyday.modules.company.branch.branchdto.BranchResponseDto;
-import com.devsantana.lyday.modules.company.branch.branchdto.CreateBranchDto;
+import com.devsantana.lyday.modules.company.branch.dto.BranchResponseDto;
+import com.devsantana.lyday.modules.company.branch.dto.CreateBranchDto;
 import com.devsantana.lyday.modules.company.branch.model.Branch;
-import org.springframework.stereotype.Component;
 
-@Component
 public class BranchMapper {
 
     public static Branch toEntity(CreateBranchDto dto){
