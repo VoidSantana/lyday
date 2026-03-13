@@ -29,34 +29,42 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
 
-                        //=============================================================
-                        // Paginas Frontend
-                        .requestMatchers("/ui/**").permitAll()
-                        // Arquivos estaticos
-                        .requestMatchers("/js/**", "/css/**").permitAll()
-                        //=============================================================
+                                //=============================================================
+                                // Paginas Frontend
+                                .requestMatchers("/ui/**").permitAll()
+                                // Arquivos estáticos
+                                .requestMatchers("/js/**", "/css/**").permitAll()
+                                //=============================================================
 
-                        //=============================================================
-                        //== LOGIN LIVRE
-                        .requestMatchers("/auth/**", "/error").permitAll()
-                        //=============================================================
+                                //=============================================================
+                                //== LOGIN LIVRE
 
-                        //=============================================================
-                        //==ADMIN e USER
-                        .requestMatchers(HttpMethod.GET, "/api/products/**")
+                                .requestMatchers("/auth/**", "/error").permitAll()
+                                //=============================================================
+
+                                //=============================================================
+                                //==ADMIN e USER
+                                .requestMatchers(HttpMethod.GET, "/api/products/**")
                                 .hasAnyRole("ADMIN", "USER")
-                        //=============================================================
+                                //=============================================================
 
 
-                        //=============================================================
-                        // ===APENAS ADMIN
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/products/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
-                        //==DEMAIS, OBRIGATORIEDADE ESTAR LOGADO
-                        .anyRequest().authenticated()
-                        //=============================================================
+                                //=============================================================
+                                // ===APENAS ADMIN
+                                .requestMatchers("/api/users/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/api/products/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/api/company/branches/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/api/company/branches/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/company/branches/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/api/company/warehouses/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/api/company/warehouses/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/company/warehouses/**").hasRole("ADMIN")
+                                //==DEMAIS, OBRIGATORIEDADE ESTAR LOGADO
+
+                                .anyRequest().authenticated()
+                                //=============================================================
                 )
                 .addFilterBefore(
                         jwtAuthenticationFilter,

@@ -20,11 +20,14 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     private final JwtTokenService jwtTokenService;
+    private final TokenBlackListService blackListService;
 
     public JwtAuthenticationFilter(UserDetailsService userDetailsService,
-                                   JwtTokenService jwtTokenService){
+                                   JwtTokenService jwtTokenService,
+                                   TokenBlackListService blackListService){
         this.userDetailsService = userDetailsService;
         this.jwtTokenService = jwtTokenService;
+        this.blackListService = blackListService;
     }
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request){
@@ -45,6 +48,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
+
+            if (blackListService.isBlackListed(token)){
+                filterChain.doFilter(request, response);
+                return;
+            }
 
             if (jwtTokenService.tokenValid(token) &&
                     SecurityContextHolder.getContext().getAuthentication() == null) {

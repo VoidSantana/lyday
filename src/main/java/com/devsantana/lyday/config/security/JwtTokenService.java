@@ -13,7 +13,7 @@ import java.util.Date;
 @Service
 public class JwtTokenService {
     private static final String SECRET_KEY = "chave-secreta-muito-segura-chave-secreta-muito-segura";
-    private static final long EXPIRATION_TIME = 1000*60*60;
+    private static final long EXPIRATION_TIME = 1000*60*15;
     private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
 
     public String generateToken(Authentication authentication){
