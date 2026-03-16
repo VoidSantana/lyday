@@ -12,9 +12,6 @@ public class ProductCreateDto {
     @NotBlank(message = "SKU é obrigatório.")
     @Size(max = 50)
     private String sku;
-    @NotNull(message = "Quantidade obrigatória.")
-    @Min(value = 0, message = "Quantidade não pode ser negativa.")
-    private Integer stock;
     @NotNull(message = "Peso é obrigatório.")
     @Positive(message = "Peso deve ser maior que 0.")
     private Double weightKg;

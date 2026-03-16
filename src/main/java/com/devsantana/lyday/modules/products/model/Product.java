@@ -14,7 +14,7 @@ import org.hibernate.annotations.SQLRestriction;
                 @Index(name = "idx_product_sku", columnList = "sku")
         }
         )
-@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE products SET deleted = true WHERE id = ?")
 @SQLRestriction("deleted = false")
 @Getter
 @Setter
@@ -28,9 +28,6 @@ public class Product extends BaseEntity {
 
     @Column(nullable = false, unique = true, length = 50)
     private String sku;// sku do produto
-
-    @Column(nullable = false)
-    private Integer stock;// quantidade do produto
 
     @Column(nullable = false)
     private Double weightKg;// peso do produto

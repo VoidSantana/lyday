@@ -10,7 +10,6 @@ public class ProductResponseDto {
     private Long id;
     private String name;
     private String sku;
-    private Integer stock;
     private Double weightKg;
     private Integer volumeCm3;
     private String description;

@@ -17,7 +17,6 @@ public class ProductMapper {
         return Product.builder()
                 .name(dto.getName())
                 .sku(dto.getSku())
-                .stock(dto.getStock())
                 .weightKg(dto.getWeightKg())
                 .volumeCm3(dto.getVolumeCm3())
                 .description(dto.getDescription())
@@ -31,7 +30,6 @@ public class ProductMapper {
     // ==================================
     public static void updateEntity(Product product, ProductUpdateDto dto){
         product.setName(dto.getName());
-        product.setStock(dto.getStock());
         product.setWeightKg(dto.getWeightKg());
         product.setVolumeCm3(dto.getVolumeCm3());
         product.setDescription(dto.getDescription());
@@ -46,7 +44,6 @@ public class ProductMapper {
                 .id(entity.getId())
                 .name(entity.getName())
                 .sku(entity.getSku())
-                .stock(entity.getStock())
                 .weightKg(entity.getWeightKg())
                 .volumeCm3(entity.getVolumeCm3())
                 .description(entity.getDescription())
