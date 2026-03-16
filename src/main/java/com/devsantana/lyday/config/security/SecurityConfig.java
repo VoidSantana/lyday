@@ -52,15 +52,22 @@ public class SecurityConfig {
                                 //=============================================================
                                 // ===APENAS ADMIN
                                 .requestMatchers("/api/users/**").hasRole("ADMIN")
+                                //------------------------------PRODUCTS------------------------------------------------
                                 .requestMatchers(HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/api/products/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
+                                //------------------------------BRANCHES------------------------------------------------
                                 .requestMatchers(HttpMethod.POST, "/api/company/branches/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/api/company/branches/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/api/company/branches/**").hasRole("ADMIN")
+                                //------------------------------WAREHOUSES----------------------------------------------
                                 .requestMatchers(HttpMethod.POST, "/api/company/warehouses/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/api/company/warehouses/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/api/company/warehouses/**").hasRole("ADMIN")
+                                //-------------------------------LOCATION-----------------------------------------------
+                                .requestMatchers(HttpMethod.POST, "/api/company/locations/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/api/company/locations/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/company/locations/**").hasRole("ADMIN")
                                 //==DEMAIS, OBRIGATORIEDADE ESTAR LOGADO
 
                                 .anyRequest().authenticated()
