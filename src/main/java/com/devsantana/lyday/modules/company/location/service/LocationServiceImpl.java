@@ -2,6 +2,7 @@ package com.devsantana.lyday.modules.company.location.service;
 
 import com.devsantana.lyday.modules.company.location.Mapper.LocationMapper;
 import com.devsantana.lyday.modules.company.location.dto.LocationCreateDto;
+import com.devsantana.lyday.modules.company.location.dto.LocationGenerateDto;
 import com.devsantana.lyday.modules.company.location.dto.LocationResponseDto;
 import com.devsantana.lyday.modules.company.location.model.Location;
 import com.devsantana.lyday.modules.company.location.repository.LocationRepository;
@@ -21,22 +22,22 @@ public class LocationServiceImpl implements LocationService{
     private final LocationRepository locationRepository;
     private final WarehouseRepository warehouseRepository;
 
-
-
     @Override
     public LocationResponseDto create(LocationCreateDto dto) {
 
+        Long warehouseId = dto.getWarehouseId();
         Warehouse warehouse = warehouseRepository
-                .findById(dto.getWarehouseId())
-                .orElseThrow(() ->
-                        new EntityNotFoundException("Warehouse Not Found"));
-        if (locationRepository.existsByWarehouseIdAndStreetAndLevelAndPosition(
-                dto.getWarehouseId(),
+                .findById(warehouseId)
+                .orElseThrow(()-> new EntityNotFoundException("Warehouse não encontrada. " + warehouseId));
+        boolean locationExists = locationRepository.existsByWarehouseIdAndStreetAndShelfAndLevelAndPosition(
+                warehouseId,
                 dto.getStreet(),
+                dto.getShelf(),
                 dto.getLevel(),
                 dto.getPosition()
-        )){
-            throw new RuntimeException("Locação já existe");
+        );
+        if (locationExists){
+            throw new IllegalStateException("Locação já existe");
         }
 
         Location location = LocationMapper.toEntity(dto, warehouse);
@@ -75,5 +76,49 @@ public class LocationServiceImpl implements LocationService{
         Location location = locationRepository.findByCode(code)
                 .orElseThrow(()-> new RuntimeException("Locação Não Encontrada"));
         return LocationMapper.toDto(location);
+    }
+    @Override
+    public void generateLocations(LocationGenerateDto dto){
+
+        Warehouse warehouse = warehouseRepository.findById(dto.getWarehouseId())
+                .orElseThrow(()-> new RuntimeException("Warehouse não encontrada"));
+        if (locationRepository.existsByWarehouseId(dto.getWarehouseId())){
+            throw new
+                    IllegalStateException(
+                            "Este warehouse já possui estas locações cadastradas. "
+            );
+        }
+
+        for (int street = 1; street <= dto.getStreets(); street++){
+            String streetCode = String.format("%02d", street);
+
+            for (int shelf = 1; shelf <= dto.getShelf(); shelf++) {
+                String shelfCode = String.format("%02d", shelf);
+
+                for (String level: dto.getLevels()){
+
+                    for (int pos = 1; pos <= dto.getPositions(); pos++){
+                        String positionCode = String.format("%02d", pos);
+
+                        String code = "%s-%s-%s-%s".formatted(
+                                streetCode,
+                                shelfCode,
+                                level,
+                                positionCode
+                        );
+
+                        Location location = Location.builder()
+                                .street(streetCode)
+                                .shelf(shelfCode)
+                                .level(level)
+                                .position(positionCode)
+                                .code(code)
+                                .warehouse(warehouse)
+                                .build();
+                        locationRepository.save(location);
+                    }
+                }
+            }
+        }
     }
 }

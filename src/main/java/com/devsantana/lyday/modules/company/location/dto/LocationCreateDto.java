@@ -6,6 +6,7 @@ import lombok.Data;
 public class LocationCreateDto {
 
     private String street;
+    private String shelf;
     private String level;
     private String position;
 

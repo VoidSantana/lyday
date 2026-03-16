@@ -8,11 +8,13 @@ import com.devsantana.lyday.modules.company.warehouses.model.Warehouse;
 public class LocationMapper {
 
     public static Location toEntity(LocationCreateDto dto, Warehouse warehouse){
-        String code = "R" + dto.getStreet()
+        String code = dto.getStreet()
+                + "-" + dto.getShelf()
                 + "-" + dto.getLevel()
                 + "-" + dto.getPosition();
         return Location.builder()
                 .street(dto.getStreet())
+                .shelf(dto.getShelf())
                 .level(dto.getLevel())
                 .position(dto.getPosition())
                 .code(code)
@@ -23,6 +25,7 @@ public class LocationMapper {
         return LocationResponseDto.builder()
                 .id(location.getId())
                 .street(location.getStreet())
+                .shelf(location.getShelf())
                 .level(location.getLevel())
                 .position(location.getPosition())
                 .code(location.getCode())

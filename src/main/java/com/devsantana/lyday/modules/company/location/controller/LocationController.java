@@ -1,6 +1,7 @@
 package com.devsantana.lyday.modules.company.location.controller;
 
 import com.devsantana.lyday.modules.company.location.dto.LocationCreateDto;
+import com.devsantana.lyday.modules.company.location.dto.LocationGenerateDto;
 import com.devsantana.lyday.modules.company.location.dto.LocationResponseDto;
 import com.devsantana.lyday.modules.company.location.service.LocationService;
 import com.devsantana.lyday.modules.company.warehouses.dto.ResponseWarehouseDto;
@@ -35,5 +36,9 @@ public class LocationController {
     @GetMapping("/code/{code}")
     public LocationResponseDto findByCode(@PathVariable String code){
         return locationService.findByCode(code);
+    }
+    @PostMapping("/generate")
+    public void generate(@RequestBody LocationGenerateDto dto){
+        locationService.generateLocations(dto);
     }
 }

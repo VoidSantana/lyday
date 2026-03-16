@@ -8,7 +8,7 @@ import lombok.*;
 @Entity
 @Table(name = "locations",
 uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"warehouse_id", "street", "level", "position"}
+        @UniqueConstraint(columnNames = {"warehouse_id", "street", "shelf", "level", "position"}
         )
 })
 @Getter
@@ -20,6 +20,9 @@ public class Location extends BaseEntity {
 
     @Column(nullable = false)
     private String street;
+
+    @Column(nullable = false)
+    private String shelf;
 
     @Column(nullable = false)
     private String level;

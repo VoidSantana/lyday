@@ -12,8 +12,11 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 
     Optional<Location> findByCode(String code);
 
-    boolean existsByWarehouseIdAndStreetAndLevelAndPosition(
+    boolean existsByWarehouseId(Long warehouseId);
+
+    boolean existsByWarehouseIdAndStreetAndShelfAndLevelAndPosition(
             Long warehouseId,
+            String shelf,
             String street,
             String level,
             String position
